@@ -1,51 +1,31 @@
-import React, { useState, useReducer } from 'react';
-import { initialState, reducer } from '../reducers/reducer';
+import React, { useState } from 'react';
 
-const TodoForm = () => {
-   const [state, dispatch] = useReducer(reducer, initialState);
-   const [newTask, setNewTask] = useState('');
-
-   const addNewTask = () => {
-      dispatch({ type: 'ADD NEW TASK', payload: newTask});
-   }
+const TodoForm = (props) => {
+   const [todo, setTodo] = useState('');
 
    const handleChanges = e => {
-      setNewTask(e.target.value);
+      setTodo(e.target.value);
    }
 
-   const toggleCompleted = () => {
-      dispatch({ type: 'TOGGLE COMPLETED'});
-   }
-
-   const clearCompleted = () => {
-      dispatch({ type: 'CLEAR COMPLETED' });
+   const handleSubmit = e => {
+      e.preventDefault();
+      props.addNewTask(todo);
+      setTodo('');
    }
 
    return (
       <div>
-         <input
-            className='new-task'
-            type='text'
-            name='newTaskInput'
-            value={newTask}
-            onChange={handleChanges}
-         />
-         <button onClick={addNewTask}>Add Task</button>
-         <div>
-            {state.map(task => {
-               return (
-                  <div>
-                     <p 
-                        style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
-                        onClick={toggleCompleted}
-                     >
-                        {task.item}
-                     </p>
-                  </div>
-               )
-            })}
-         </div>
-         <button onClick={clearCompleted}>Clear Completed</button>
+         <form onSubmit={handleSubmit}>
+            <input
+               className='new-task'
+               type='text'
+               name='newTaskInput'
+               value={todo}
+               onChange={handleChanges}
+            />
+            <button>Add Task</button>
+         </form>
+         <button onClick={props.clearCompleted}>Clear Completed</button>
       </div>
    )
 }

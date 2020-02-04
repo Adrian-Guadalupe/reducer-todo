@@ -1,12 +1,11 @@
 import React from 'react';
-import { initialState, reducer } from '../reducers/reducer';
 
-const Task = () => {
-   const [state, dispatch] = useReducer(reducer, initialState);
-
+const Task = ({ task, toggleCompleted }) => {
    return (
-      <div>
-         <p>{state.item}</p>
+      <div style={{ textDecoration: task.completed ? 'line-through' : 'none' }} onClick={()=> toggleCompleted(task.id)}>
+         <p>
+            {task.item}
+         </p>
       </div>
    )
 }
